@@ -1,4 +1,4 @@
-import { ModeToggle } from "./Theme-switcher"
+import { ModeToggle } from "./theme-switcher"
 
 export const Navbar = () => {
   return (

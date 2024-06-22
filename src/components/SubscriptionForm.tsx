@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 import {
   Form,
   FormControl,
@@ -14,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { sendEmail } from "@/app/actions/emailActions"
 
 const formSchema = z.object({
   fullname: z.string().min(3, {
@@ -33,10 +35,16 @@ const SubscriptionForm = () => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+    try {
+      await sendEmail(values)
+      toast.success(`${values.fullname} subscribed`)
+    } catch (error) {
+      toast.error("something wennt wront")
+    }
   }
 
   const { isSubmitting, isValid } = form.formState
